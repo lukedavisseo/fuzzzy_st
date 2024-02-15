@@ -1,42 +1,62 @@
-import streamlit as st
+import advertools as adv
+from polyfuzz import PolyFuzz
 import pandas as pd
-import floutils as flou
+import streamlit as st
 
-st.header("Welcome to Flou!")
+def generate_matches_from_sitemap(sitemap_url):
+	sitemap_df = adv.sitemap_to_df(sitemap_url)
+	sitemap_url_list = sitemap_df['loc'].to_list()
+	return sitemap_url_list
 
-st.info("Flou is a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks such as redirect mapping and internal linking opportunities.")
+def generate_matches_from_csv(crawl_csv, column_name):
+	crawl_csv_url_list = data[column_name].tolist()
+	return crawl_csv_url_list
 
-data = st.file_uploader(
-    "1 - Upload a CSV with at least one column containing the strings you want to match.",
-    type=["csv", "xls"],
-    accept_multiple_files=False,
-)
+def generate_matches_from_list(url_list):
+	urls_to_check_list = [url for url in url_list.split('\n')]
+	return urls_to_check_list
 
-if data:
-    df = pd.read_csv(data)
-    string_column = st.selectbox("2 - Select the column you want to use for matching", df.columns)
-    primary_strings_list = df[string_column].to_list()
-    strings_to_match = st.text_area(
-        "3 - Now enter the titles/URLs/strings you want to match with that list."
-    )
-    generate = st.button("Generate")
+st.header('Fuzzzy ST')
+st.subheader("List A")
 
-    if generate and __name__ == "__main__":
-        try:
-            secondary_strings_list = strings_to_match.split("\n")
-            from_list = [primary_string for primary_string in primary_strings_list]
-            to_list = [secondary_string for secondary_string in secondary_strings_list]
-            df_1 = flou.get_tf_idf_results(from_list, to_list)
-            df_2 = flou.get_all_minilm_l6_v2_results(from_list, to_list)
-            df_3 = flou.all_mpnet_base_v2(from_list, to_list)
-            df_final = flou.display_all_dfs(df_1, df_2, df_3)
-            st.dataframe(df_final)
-            flou_csv = df_final.to_csv(index=False)
-            st.download_button(
-                label="Download as CSV",
-                data=flou_csv,
-                file_name="fuzzy_matched_titles.csv",
-            )
-        except Exception as error:
-            if type(error) in flou.errors_dict:
-                st.warning(flou.errors_dict[type(error)])
+input_type = st.sidebar.radio("Choose an input type", ['Sitemap', 'CSV', 'List'])
+
+if input_type == 'Sitemap':
+	sitemap_url = st.text_input("Enter the sitemap URL")
+elif input_type == 'CSV':
+	crawl_csv = st.file_uploader('Or upload your CSV file. Make sure the URL column is called "URLs"', type="csv")
+	if crawl_csv:
+		data = pd.read_csv(crawl_csv)
+		column_options = st.radio('Choose the column you want to fuzzy match', data.columns.to_list())
+elif input_type == 'List':
+	url_list = st.text_area('Or add a list of URLs to check, 1 per line')
+
+st.subheader("List B")
+
+list_b = st.text_area('Now, add the list of URLs you want to match with it.')
+
+option_picker = st.radio("Which way do you want to match the URL lists?", ['I want to find which URLs from List B match with URLs in List A', 'I want to find which URLs from List A match with URLs in List B'])
+
+submit = st.button("Submit")
+
+if submit:
+
+	test_list = [url for url in list_b.split('\n')]
+
+	if input_type == 'Sitemap':
+		match_list = generate_matches_from_sitemap(sitemap_url)
+	elif input_type == 'CSV':
+		match_list = generate_matches_from_csv(crawl_csv, column_options)
+	else:
+		match_list = generate_matches_from_list(url_list)
+
+	if option_picker == 'I want to find which URLs from List B match with URLs in List A':
+		model = PolyFuzz().match(match_list, test_list)
+	else:
+		model = PolyFuzz().match(test_list, match_list)
+
+	# This converts the matches into another DataFrame
+	df = model.get_matches()
+
+	# Display DataFrame
+	st.dataframe(df)
