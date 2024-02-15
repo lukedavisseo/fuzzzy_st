@@ -1,13 +1,13 @@
-# Flou
+# Fuzzzy ST
  A fuzzy matching tool
 
 ## Intro
-Flou is a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks. It will use fuzzy matching libraries and Python to do this.
+Fuzzzy ST is a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks. It will use fuzzy matching libraries and Python to do this.
 
 ## Quick instructions
 
 1. Create a CSV with at least one column of strings (URLs, titles, headings)
-2. Upload that CSV to Flou
+2. Upload that CSV to Fuzzzy ST
 3. Select the column you want to use for matching
 4. Enter a list of strings you want to match against the list from your CSV
 5. Click Generate
@@ -15,14 +15,14 @@ Flou is a fuzzy matching tool designed to match strings from a given dataset to 
 7. Click Download CSV to download the table in a CSV file
 
 ## Data input
-Currently, Flou will only accept text data from CSV files. That text data can be any of the following (but not exclusively):
+Currently, Fuzzzy ST will only accept text data from CSV files. That text data can be any of the following (but not exclusively):
 
 * URLs
 * Metadata (meta titles and meta descriptions)
 * Headings (H1-H6)
 
 ## Processing
-Flou uses PolyFuzz, a fuzzy matching Python package, to determine matching scores for two given datasets with help from three language models:
+Fuzzzy ST uses PolyFuzz, a fuzzy matching Python package, to determine matching scores for two given datasets with help from three language models:
 
 * TF-IDF
 * all-MiniLM-L6-v2
