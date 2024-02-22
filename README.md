@@ -6,29 +6,27 @@ Fuzzzy ST is a fuzzy matching tool designed to match strings from a given datase
 
 ## Quick instructions
 
-1. Create a CSV with at least one column of strings (URLs, titles, headings)
-2. Upload that CSV to Fuzzzy ST
-3. Select the column you want to use for matching
-4. Enter a list of strings you want to match against the list from your CSV
-5. Click Generate
-6. A table will pop up and display the matches and their average matching scores
-7. Click Download CSV to download the table in a CSV file
+1. Choose one of the modes in the left sidebar: Sitemap, CSV, and List
+ 1a. If you choose Sitemap, enter the sitemap URL in the first text input field
+ 1b. If you choose CSV, upload a CSV of the strings you want to match. You can then pick the column you want to use to match.
+ 1c. If you choose List, you can add a list of strings (e.g. URLs, titles, headings), one per line
+3. Create a CSV with at least one column of strings (URLs, titles, headings)
+4. Under List B, add your second list of strings, one per line
+5. Now, you need to decide which way you want to match your lists. "I want to find which URLs from List B match with URLs in List A" will make List A the "master" list and "I want to find which URLs from List A match with URLs in List B" will make List B the "master" list. This might be confusing, and it is to me too so if you need help, ask me!
+6. Once everything is ready, click Submit and you will get a table of both lists in two columns (From and To) and their similarity score in the final column (100% means a perfect match and anything closer to 0% means a poor match). 
+9. You can download this table as a CSV if you click on the download icon in the top right corner.
 
 ## Data input
-Currently, Fuzzzy ST will only accept text data from CSV files. That text data can be any of the following (but not exclusively):
+Fuzzzy ST accepts text data in three formats (via a sitemap URL, a CSV file, or manually inputted strings). That text data can be any of the following (but not exclusively):
 
 * URLs
 * Metadata (meta titles and meta descriptions)
 * Headings (H1-H6)
 
 ## Processing
-Fuzzzy ST uses PolyFuzz, a fuzzy matching Python package, to determine matching scores for two given datasets with help from three language models:
+Fuzzzy ST uses PolyFuzz, a fuzzy matching Python package, to determine matching scores for two given datasets. The algorithm is [TF-IDF](https://maartengr.github.io/PolyFuzz/api/models/tfidf/) but there are different models available.
 
-* TF-IDF
-* all-MiniLM-L6-v2
-* all-mpnet-base-v2
-
-The reason for using 3 models rather than 1 is because they each come with their own strengths and weaknesses in matching certain texts. In tests, I’ve found that TF-IDF works well with comparing strings that are very similar (“cats” vs. “cat”), but not if the similarity is only semantic (“cats” vs. “kittens”).
+The original plan was to use 3 different models and get an average score but, honestly, that felt like overkill for our use cases.
 
 ## Benefits for SEO department
 
@@ -46,4 +44,4 @@ An example of this use is with FireSealsDirect and The Access Group. This proces
 
 ## Performance considerations
 
-Due to the size of the language models, it may take a while to run the tool for large datasets. This could be mitigated by allowing the user to select the models they want to use rather than using all three by default. This may be at the expense of quality but the results would be quicker.
+Because TF-IDF is a simple algorithm, the speed of generating matches is dependent on the number of strings you want to compare. Accuracy is also dependent on the strings you're comparing. Ideally, both lists should be similar in nature (URLs vs URLs, titles vs. titles). You should also keep in mind that this algorithm will not check for semantic similarity, so "**cat**" and "**cat**astrophy" may have a closer score than "cat" and "kitten".
