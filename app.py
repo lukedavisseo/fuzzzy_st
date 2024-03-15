@@ -29,13 +29,13 @@ elif input_type == 'CSV':
 		data = pd.read_csv(crawl_csv)
 		column_options = st.radio('Choose the column you want to fuzzy match', data.columns.to_list())
 elif input_type == 'List':
-	url_list = st.text_area('Or add a list of URLs to check, 1 per line')
+	url_list = st.text_area('Or add a list of URLs or strings to check, 1 per line')
 
 st.subheader("List B")
 
-list_b = st.text_area('Now, add the list of URLs you want to match with it.')
+list_b = st.text_area('Now, add the list of URLs or strings you want to match with it.')
 
-option_picker = st.radio("Which way do you want to match the URL lists?", ['I want to find which URLs from List B match with URLs in List A', 'I want to find which URLs from List A match with URLs in List B'])
+option_picker = st.radio("Which way do you want to match the lists?", ['From List A to List B', 'From List B to List A'])
 
 submit = st.button("Submit")
 
@@ -50,7 +50,7 @@ if submit:
 	else:
 		match_list = generate_matches_from_list(url_list)
 
-	if option_picker == 'I want to find which URLs from List B match with URLs in List A':
+	if option_picker == 'From List A to List B':
 		model = PolyFuzz().match(match_list, test_list)
 	else:
 		model = PolyFuzz().match(test_list, match_list)
