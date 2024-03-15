@@ -24,7 +24,7 @@ input_type = st.sidebar.radio("Choose an input type", ['Sitemap', 'CSV', 'List']
 if input_type == 'Sitemap':
 	sitemap_url = st.text_input("Enter the sitemap URL")
 elif input_type == 'CSV':
-	crawl_csv = st.file_uploader('Or upload your CSV file. Make sure the URL column is called "URLs"', type="csv")
+	crawl_csv = st.file_uploader('Or upload your CSV file.', type="csv")
 	if crawl_csv:
 		data = pd.read_csv(crawl_csv)
 		column_options = st.radio('Choose the column you want to fuzzy match', data.columns.to_list())
