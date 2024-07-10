@@ -1,5 +1,4 @@
 polyfuzz>=0.4.2
 advertools>=0.13.2
 pandas>=1.5.3
-matplotlib==3.6.2
-numpy==2.0.0
+matplotlib>=3.6.2
