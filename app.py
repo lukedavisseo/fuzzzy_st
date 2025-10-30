@@ -1,23 +1,7 @@
-import advertools as adv
 from polyfuzz import PolyFuzz
-import pandas as pd
 import streamlit as st
-
-# Generates matches based on a sitemap URL input
-def generate_matches_from_sitemap(sitemap_url):
-	sitemap_df = adv.sitemap_to_df(sitemap_url)
-	sitemap_url_list = sitemap_df['loc'].to_list()
-	return sitemap_url_list
-
-# Generates matches based on a CSV file input
-def generate_matches_from_csv(crawl_csv, column_name):
-	crawl_csv_url_list = data[column_name].tolist()
-	return crawl_csv_url_list
-
-# Generates matches based on a text list input
-def generate_matches_from_list(url_list):
-	urls_to_check_list = [url for url in url_list.split('\n')]
-	return urls_to_check_list
+import polars as pl
+import funcs
 
 # Titles and stuff
 st.header('Fuzzzy ST')
@@ -53,15 +37,12 @@ st.subheader("List A")
 input_type = st.sidebar.radio("Choose an input type", ['Sitemap', 'CSV', 'List'])
 
 if input_type == 'Sitemap':
-	sitemap_url = st.text_input("Enter the sitemap URL")
+	input_data = st.text_input("Enter the sitemap URL")
 elif input_type == 'CSV':
-	crawl_csv = st.file_uploader('Or upload your CSV file. Make sure the URL column is called "URLs"', type="csv")
-	if crawl_csv:
-		data = pd.read_csv(crawl_csv)
-		st.dataframe(data)
-		column_options = st.radio('Choose the column you want to fuzzy match', data.columns.to_list())
+	input_data = st.file_uploader('Or upload your CSV file. Make sure the URL column is called "URLs"', type="csv")
 elif input_type == 'List':
-	url_list = st.text_area('Or add a list of URLs to check, 1 per line')
+	input_data = st.text_area('Or add a list of URLs to check, 1 per line')
+	list_removal = st.checkbox("Tick this to remove the candidate list from the matching list", value=False)
 
 st.subheader("List B")
 
@@ -74,13 +55,9 @@ generate = st.button("Generate")
 if generate:
 
 	test_list = [url for url in list_b.split('\n')]
-
-	if input_type == 'Sitemap':
-		match_list = generate_matches_from_sitemap(sitemap_url)
-	elif input_type == 'CSV':
-		match_list = generate_matches_from_csv(crawl_csv, column_options)
-	else:
-		match_list = generate_matches_from_list(url_list)
+	match_list = funcs.all_generate_matches(input_data, input_type)
+	if list_removal:
+		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
 
 	if option_picker == 'From List A to List B':
 		model = PolyFuzz().match(match_list, test_list)
