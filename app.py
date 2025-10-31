@@ -56,7 +56,7 @@ if generate:
 
 	test_list = [url for url in list_b.split('\n')]
 	match_list = funcs.all_generate_matches(input_data, input_type)
-	if list_removal:
+	if input_type == 'CSV' and list_removal:
 		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
 	else:
 		match_list = funcs.all_generate_matches(input_data, input_type)
