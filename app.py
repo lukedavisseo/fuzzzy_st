@@ -58,6 +58,8 @@ if generate:
 	match_list = funcs.all_generate_matches(input_data, input_type)
 	if list_removal:
 		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
+	else:
+		match_list = funcs.all_generate_matches(input_data, input_type)
 
 	if option_picker == 'From List A to List B':
 		model = PolyFuzz().match(match_list, test_list)
