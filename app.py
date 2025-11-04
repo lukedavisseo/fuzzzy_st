@@ -42,7 +42,6 @@ elif input_type == 'CSV':
 	input_data = st.file_uploader('Or upload your CSV file. Make sure the URL column is called "URLs"', type="csv")
 elif input_type == 'List':
 	input_data = st.text_area('Or add a list of URLs to check, 1 per line')
-	list_removal = st.checkbox("Tick this to remove the candidate list from the matching list", value=False)
 
 st.subheader("List B")
 
@@ -56,19 +55,14 @@ if generate:
 
 	test_list = [url for url in list_b.split('\n')]
 	match_list = funcs.all_generate_matches(input_data, input_type)
-	
-	if input_type == 'List' and list_removal:
-		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
 
 		try:
 			if option_picker == 'From List A to List B':
 				model = PolyFuzz().match(match_list, test_list)
-				df = model.get_matches()
-				st.dataframe(df)
 			else:
 				model = PolyFuzz().match(test_list, match_list)
-		except ValueError:
-			st.warning("It looks like there's an empty match list now. Maybe swap the lists around and try again?")
+		except ValueError as e:
+			st.warning(e)
 
 	# This converts the matches into another DataFrame
 	df = model.get_matches()
