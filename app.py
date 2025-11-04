@@ -56,13 +56,13 @@ if generate:
 	test_list = [url for url in list_b.split('\n')]
 	match_list = funcs.all_generate_matches(input_data, input_type)
 
-		try:
-			if option_picker == 'From List A to List B':
-				model = PolyFuzz().match(match_list, test_list)
-			else:
-				model = PolyFuzz().match(test_list, match_list)
-		except ValueError as e:
-			st.warning(e)
+	try:
+		if option_picker == 'From List A to List B':
+			model = PolyFuzz().match(match_list, test_list)
+		else:
+			model = PolyFuzz().match(test_list, match_list)
+	except ValueError as e:
+		st.warning(e)
 
 	# This converts the matches into another DataFrame
 	df = model.get_matches()
