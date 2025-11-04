@@ -55,11 +55,10 @@ generate = st.button("Generate")
 if generate:
 
 	test_list = [url for url in list_b.split('\n')]
+	match_list = funcs.all_generate_matches(input_data, input_type)
 	
 	if input_type == 'List' and list_removal:
 		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
-	else:
-		match_list = funcs.all_generate_matches(input_data, input_type)
 
 	try:
 		if option_picker == 'From List A to List B':
