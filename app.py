@@ -65,7 +65,7 @@ if generate:
 		st.warning(e)
 
 	# This converts the matches into another DataFrame
-	df = pl.from_pandas(model.get_matches())[1:]
+	df = pl.from_pandas(model.get_matches())
 
 	# Display DataFrame
 	st.dataframe(df)
