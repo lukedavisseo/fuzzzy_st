@@ -60,13 +60,15 @@ if generate:
 	if input_type == 'List' and list_removal:
 		match_list = funcs.remove_from_list(test_list, match_list, option_picker)
 
-	try:
-		if option_picker == 'From List A to List B':
-			model = PolyFuzz().match(match_list, test_list)
-		else:
-			model = PolyFuzz().match(test_list, match_list)
-	except ValueError:
-		st.warning("It looks like there's an empty match list now. Maybe swap the lists around and try again?")
+		try:
+			if option_picker == 'From List A to List B':
+				model = PolyFuzz().match(match_list, test_list)
+				df = model.get_matches()
+				st.dataframe(df)
+			else:
+				model = PolyFuzz().match(test_list, match_list)
+		except ValueError:
+			st.warning("It looks like there's an empty match list now. Maybe swap the lists around and try again?")
 
 	# This converts the matches into another DataFrame
 	df = model.get_matches()
