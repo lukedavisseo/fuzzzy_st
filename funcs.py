@@ -4,7 +4,8 @@ import streamlit as st
 
 # Generates matches based on a sitemap URL input
 def generate_matches_from_sitemap(sitemap_url):
-	sitemap_df = adv.sitemap_to_df(sitemap_url)
+	headers = {"User-Agent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.7444.162 Mobile Safari/537.36 +https://sitebulb.com"}
+	sitemap_df = adv.sitemap_to_df(sitemap_url, headers=headers)
 	sitemap_url_list = sitemap_df['loc'].to_list()
 	return sitemap_url_list
 
