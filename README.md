@@ -1,10 +1,24 @@
 # Fuzzzy ST
- A fuzzy matching tool
 
-## Intro
-Fuzzzy ST is a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks. It will use fuzzy matching libraries and Python to do this.
+<img src="https://github.com/lukedavisseo/fuzzy-st/blob/main/matching-icon.png" alt="an icon showing shapes matching each other" width="64" height="64" align="right">
 
-## Quick instructions
+> a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks
+
+## Table of Contents
+ - [Demo](#demo)
+ - [How to use](#how-to-use)
+ - [Data input](#data-input)
+ - [Processing](#processing)
+ - [Benefits for SEO department](#benefits-for-seo-department)
+ 	- [Redirect maps](#redirect-maps)
+ 	- [Internal linking](#internal-linking)
+ - [Performance considerations](#performance-considerations)
+
+## Demo
+
+You can try it for yourself here: https://fuzzzy-st.streamlit.app/
+
+## How to use
 
 1. Choose one of the modes in the left sidebar: Sitemap, CSV, and List
  1a. If you choose Sitemap, enter the sitemap URL in the first text input field
@@ -45,3 +59,5 @@ An example of this use is with FireSealsDirect and The Access Group. This proces
 ## Performance considerations
 
 Because TF-IDF is a simple algorithm, the speed of generating matches is dependent on the number of strings you want to compare. Accuracy is also dependent on the strings you're comparing. Ideally, both lists should be similar in nature (URLs vs URLs, titles vs. titles). You should also keep in mind that this algorithm will not check for semantic similarity, so "**cat**" and "**cat**astrophy" may have a closer score than "cat" and "kitten".
+
+image credit: [matching](https://thenounproject.com/icon/matching-6446797/) by WEBTECHOPS LLP from Noun Project ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/deed.en))
