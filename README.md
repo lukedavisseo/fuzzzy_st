@@ -1,6 +1,6 @@
 # Fuzzzy ST
 
-<img src="https://github.com/lukedavisseo/fuzzy-st/blob/main/matching-icon.png" alt="an icon showing shapes matching each other" width="64" height="64" align="right">
+<img src="https://github.com/lukedavisseo/fuzzzy_st/blob/main/matching-icon.png" alt="an icon showing shapes matching each other" width="64" height="64" align="right">
 
 > a fuzzy matching tool designed to match strings from a given dataset to aid a variety of content and technical SEO tasks
 
